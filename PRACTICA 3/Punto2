@@ -1,0 +1,128 @@
+programa punto2
+procesos
+  proceso juntarflores(ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores + 1
+  fin
+  proceso juntarpapeles (ES papeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles + 1
+  fin
+
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot robotflorero
+  variables
+    flores, num, id:numero
+  comenzar
+    RecibirMensaje(id,Rfisca)
+    num:=5
+    flores:=0
+    repetir 4
+      repetir num 
+        mover
+      juntarflores(flores)
+      derecha
+      repetir num
+        mover
+      juntarflores(flores)
+      repetir 3
+        derecha
+      num:=num - 1
+    mover
+    juntarflores(flores)
+    derecha
+    BloquearEsquina (15,15)
+    mover
+    juntarflores(flores)
+    repetir 2 
+      derecha
+    mover
+    LiberarEsquina(15,15)
+    num:=num + 1
+    repetir 4
+      repetir num
+        mover
+      juntarflores(flores)
+      derecha
+      repetir num
+        mover
+      juntarflores(flores)
+      repetir 3
+        derecha
+      num:=num + 1
+    EnviarMensaje (id,Rfisca)
+  fin
+  
+  robot robotpapelero
+  variables
+    papeles,num,id:numero
+  comenzar
+    RecibirMensaje(id,Rfisca)
+    num:=5
+    papeles:=0
+    repetir 4
+      repetir num
+        mover
+      juntarpapeles(papeles)
+      repetir 3
+        derecha
+      repetir num
+        mover
+      juntarpapeles(papeles)
+      derecha
+      num:=num - 1
+    mover
+    juntarpapeles(papeles)
+    repetir 3
+      derecha
+    BloquearEsquina(15,15)
+    mover
+    juntarpapeles(papeles)
+    repetir 2 
+      derecha
+    mover
+    LiberarEsquina(15,15)
+    num:=num + 1
+    repetir 4
+      repetir num
+        mover
+      juntarpapeles(papeles)
+      repetir 3 
+        derecha
+      repetir num
+        mover
+      juntarpapeles(papeles)
+      derecha
+      num:=num + 1
+    EnviarMensaje (id,Rfisca)
+  fin
+  robot fisca
+  variables
+    id:numero
+  comenzar
+    EnviarMensaje (1, Rf)
+    EnviarMensaje (2, Rp)
+    RecibirMensaje (id, *)
+    si (id = 1)
+      Informar ('GANO_ELROBOT_FLORERO', id)
+    sino
+      Informar ('GANO_EL_ROBOT_PAPELERO', id)
+  fin
+variables
+  Rf: robotflorero
+  Rp: robotpapelero
+  Rfisca: fisca
+comenzar
+  AsignarArea(Rf, ciudad)
+  AsignarArea(Rp, ciudad)
+  AsignarArea(Rfisca, ciudad)
+  Iniciar(Rfisca, 15,1)
+  Iniciar(Rf, 1,1)
+  Iniciar(Rp, 31,1)
+fin

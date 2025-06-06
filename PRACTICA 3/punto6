@@ -1,0 +1,136 @@
+programa punto6
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot robot1
+  variables
+    id,ca:numero
+  comenzar
+    RecibirMensaje (id,RF)
+    repetir 4
+      repetir 6
+        si (PosAv=5)&(PosCa=7)
+          BloquearEsquina (5,8)
+        si (PosAv=5)&(PosCa=9)
+          LiberarEsquina(5,8)
+        mientras (HayFlorEnLaEsquina)
+          tomarFlor
+        mover
+        
+      derecha
+    EnviarMensaje (id,RF)
+    RecibirMensaje (ca,RF)
+    Pos(1,ca)
+    derecha
+    mientras (HayFlorEnLaBolsa) & (PosAv < 100)
+      depositarFlor
+      mover
+    
+  fin
+  robot robot2
+  variables
+    id,ca:numero
+    ok,flores,papeles:boolean
+  comenzar
+    ok:=V
+    flores:=V
+    papeles:=V
+    RecibirMensaje (id,RF)
+    repetir 4
+      repetir 10
+        mientras (HayFlorEnLaEsquina)
+          tomarFlor
+        mientras (HayPapelEnLaEsquina)
+          tomarPapel
+        mover
+      derecha
+    EnviarMensaje (id,RF)
+    RecibirMensaje (ca,RF)
+    Pos(1,ca)
+    derecha
+    mientras (PosAv < 100) & (ok = V)
+      si (HayPapelEnLaBolsa)
+        depositarPapel
+      sino
+        papeles:=F
+      si (HayFlorEnLaBolsa)
+        depositarFlor
+      sino
+        flores:=F
+      si (flores=F)&(papeles=F)
+        ok:=F
+      si (ok=V)
+        mover
+  fin
+  
+  robot robot3
+  variables
+    id,ca:numero
+  comenzar
+    RecibirMensaje (id,RF)
+    repetir 4
+      repetir 7
+        mientras (HayPapelEnLaEsquina)
+          tomarPapel
+        mover
+      derecha
+    EnviarMensaje (id,RF)
+    RecibirMensaje (ca,RF)
+    Pos(1,ca)
+    derecha
+    mientras (HayPapelEnLaBolsa) & (PosAv < 100)
+      depositarPapel
+      mover
+  fin
+  robot fisca
+  variables
+    id,cont:numero
+  comenzar
+    cont:=1
+    EnviarMensaje (1,R1)
+    EnviarMensaje (2,R2)
+    EnviarMensaje (3,R3)   
+    repetir 3
+      RecibirMensaje (id,*)
+      si (id=1)&(cont=1)
+        EnviarMensaje(20,R1)
+      sino
+        si (id=1)&(cont=2)
+          EnviarMensaje(21,R1)
+        sino
+          si (id=1)&(cont=3)
+            EnviarMensaje (22,R1)
+          sino
+            si (id=2)&(cont=1)
+              EnviarMensaje (20,R2)
+            sino
+              si (id=2)& (cont=2)
+                EnviarMensaje (21,R2)
+              sino
+                si (id=2)&(cont=3)
+                  EnviarMensaje (22,R2)
+                sino
+                  si (id=3)&(cont=1)
+                    EnviarMensaje (20,R3)
+                  sino
+                    si (id=3)&(cont=2)
+                      EnviarMensaje (21,R3)
+                    sino
+                      EnviarMensaje (20,R3)
+      cont:=cont + 1
+  fin
+variables
+  R1: robot1
+  R2: robot2
+  R3: robot3
+  RF: fisca
+comenzar
+  AsignarArea(R1, ciudad)
+  AsignarArea(R2, ciudad)
+  AsignarArea(R3, ciudad)
+  AsignarArea(RF, ciudad)
+  Iniciar(R1, 2,2)
+  Iniciar(R2, 5,5)
+  Iniciar(R3, 9,9)
+  Iniciar(RF, 1,1)
+fin

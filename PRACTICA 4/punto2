@@ -1,0 +1,96 @@
+programa punto2
+procesos
+  proceso recorrerAvenida(E numAv: numero)
+  comenzar
+    Pos(numAv, 1)
+    repetir 99
+      mover
+  fin
+areas
+  PR1: AreaP (5,1,5,100)
+  PR2: AreaP (10,1,10,100)
+  CO1: AreaP (11,1,11,1)
+  CO2: AreaP (12,1,12,1)
+  ciudad: AreaC (50,50,50,50)
+robots
+  robot productor
+  variables
+    OriCa,OriAv,papeles:numero
+  comenzar
+    mientras (PosCa < 100)
+      mientras (papeles < 5) & (PosCa < 100)
+        OriAv:=PosAv
+        OriCa:=PosCa
+        si (HayPapelEnLaEsquina)
+          mientras (HayPapelEnLaEsquina)&(papeles < 5)
+            tomarPapel {Preguntar tema concurrencia}
+            papeles:=papeles + 1
+        sino
+          mover 
+      si (papeles = 5)
+        BloquearEsquina (50,50)
+        Pos(50,50)
+        repetir papeles
+          depositarPapel
+        Pos(OriAv,OriCa)
+        LiberarEsquina (50,50)
+        papeles:=0
+    mientras (HayPapelEnLaEsquina)&(papeles < 5)
+      tomarPapel {Preguntar tema concurrencia}
+      papeles:=papeles + 1
+      si (papeles = 5)
+        BloquearEsquina (50,50)
+        Pos(50,50)
+        repetir papeles
+          depositarPapel
+        Pos(OriAv,OriCa)
+        LiberarEsquina (50,50)
+        papeles:=0
+  fin
+  robot consumidor
+  variables
+    papeles,int,OriAv,OriCa,total:numero
+  comenzar
+    int:=0
+    OriAv:=PosAv
+    OriCa:=PosCa
+    mientras (int < 8)
+      total:=0
+      Random (papeles, 2,5)
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      mientras (HayPapelEnLaEsquina) & (total < papeles)
+        tomarPapel
+        total:=total + 1
+      si (total < papeles)
+        repetir total
+          depositarPapel
+      Pos(OriAv,OriCa)
+      LiberarEsquina(50,50)
+      si (total = papeles)
+        repetir papeles
+          depositarPapel
+        int:=0
+      sino
+        int:=int + 1
+  fin
+  
+variables
+  RP1: productor
+  RP2: productor
+  RC1: consumidor
+  RC2: consumidor
+comenzar
+  AsignarArea(RP1, ciudad)
+  AsignarArea(RP1, PR1)
+  AsignarArea(RP2, ciudad)
+  AsignarArea(RP2, PR2)
+  AsignarArea(RC1, ciudad)
+  AsignarArea(RC1, CO1)
+  AsignarArea(RC2, ciudad)
+  AsignarArea(RC2, CO2)
+  Iniciar(RP1, 5,1)
+  Iniciar(RP2, 10,1)
+  Iniciar(RC1, 11,1)
+  Iniciar(RC2, 12,1)
+fin

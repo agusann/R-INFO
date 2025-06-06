@@ -1,0 +1,63 @@
+programa ejemplo
+procesos
+  proceso JuntarPapeles (ES papeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles + 1
+  fin
+  
+
+  proceso recorrerAvenida(ES papeles:numero)
+  comenzar
+    papeles:=0
+    repetir 19
+      si (HayPapelEnLaEsquina)
+        JuntarPapeles(papeles)
+      mover
+    JuntarPapeles (papeles)
+  fin
+areas
+  a1: AreaP (10,10,10,29)
+  a2: AreaP (10,30,29,30)
+  a3: AreaP (30,11,30,30)
+  a4: AreaP (11,10,30,10)
+  {area: AreaC (1,1,100,100)}
+robots
+  robot robot1
+  variables 
+    papeles:numero
+  comenzar
+    si (PosAv = 10)&(PosCa = 10)
+      recorrerAvenida(papeles)
+    sino
+      si (PosAv = 10)&(PosCa = 30)
+        derecha
+        recorrerAvenida(papeles)
+      sino
+        si (PosAv = 30)&(PosCa = 30)
+          repetir 2
+            derecha
+          recorrerAvenida(papeles)
+        sino
+          si (PosAv = 30)&(PosCa = 10)
+            repetir 3 
+              derecha
+            recorrerAvenida(papeles)
+    Informar ('La cantidad de papeles que junto ', papeles)
+  fin
+variables
+  R1: robot1
+  R2: robot1
+  R3: robot1
+  R4: robot1
+comenzar
+  AsignarArea(R1, a1)
+  AsignarArea(R2, a2)
+  AsignarArea(R3, a3)
+  AsignarArea(R4, a4)
+  Iniciar(R1, 10,10)
+  Iniciar(R2, 10,30)
+  Iniciar(R3, 30,30)
+  Iniciar(R4, 30,10)
+fin

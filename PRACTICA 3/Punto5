@@ -1,0 +1,87 @@
+{Bienvenidos al entorno CMRE.
+Lo siguiente es un código de ejemplo que implementa un
+proceso que recibe un número de avenida como parámetro,
+se posiciona en esa avenida y la recorre.}
+
+programa ejemplo
+procesos
+  proceso recorrerAvenida(E numAv: numero)
+  comenzar
+    Pos(numAv, 1)
+    repetir 99
+      mover
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot corredor
+  variables
+    ok:boolean
+    id,ca,av:numero
+  comenzar
+    RecibirMensaje (id, RC)
+    ok:=V
+    mientras (ok= V)
+      av:=PosAv
+      ca:=PosCa
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      si (HayFlorEnLaEsquina)
+        tomarFlor
+      sino
+        ok:=F
+      Pos(av,ca)
+      LiberarEsquina(11,11)
+      si (HayFlorEnLaBolsa)
+        depositarFlor
+      si (PosCa < 100) & (ok=V)
+        mover
+      sino
+        ok:=F
+    EnviarMensaje(id,RC)
+    EnviarMensaje(ca,RC)
+  fin
+  robot coordinador
+  variables
+    id,ca,max,idmax:numero
+  comenzar
+    max:=0
+    EnviarMensaje(1,R1)
+    EnviarMensaje(2,R2)
+    EnviarMensaje(3,R3)
+    EnviarMensaje(4,R4)
+    repetir 4
+      RecibirMensaje(id,*)
+      si (id=1)
+        RecibirMensaje(ca,R1)
+      sino
+        si (id=2)
+          RecibirMensaje(ca,R2)
+        sino
+          si (id=3)
+            RecibirMensaje(ca,R3)
+          sino
+            RecibirMensaje(ca,R4)
+      si(ca > max)
+        max:= ca
+        idmax:=id
+    Informar('EL ROBOT ganador que llego mas lejos es el ', idmax)
+  fin
+variables
+  RC: coordinador
+  R1: corredor
+  R2: corredor
+  R3: corredor
+  R4: corredor
+comenzar
+  AsignarArea(RC, ciudad)
+  AsignarArea(R1, ciudad)
+  AsignarArea(R2, ciudad)
+  AsignarArea(R3, ciudad)
+  AsignarArea(R4, ciudad)
+  Iniciar(RC, 1,1)
+  Iniciar(R1, 4,1)
+  Iniciar(R2, 6,1)
+  Iniciar(R3, 8,1)
+  Iniciar(R4, 10,1)
+fin

@@ -1,0 +1,76 @@
+programa ejemplo
+areas
+  CORDI: AreaP (100,100,100,100)
+  UNO: AreaP (1,1,1,100) 
+  DOS: AreaP (2,1,2,100)
+  TRES: AreaP (3,1,3,100)
+  
+robots
+  robot papeleros
+  variables
+    listo,id,papeles,total:numero
+  comenzar 
+    papeles:=0
+    listo:=1
+    RecibirMensaje (id,RC)
+    Random(total,1,5)
+    mientras (PosCa < 100)
+      mientras (HayPapelEnLaEsquina)&(papeles < total)   
+        tomarPapel   
+        papeles:=papeles + 1
+      si (papeles = total)
+        si (id=1)
+          EnviarMensaje (listo,R2)
+          EnviarMensaje (listo,R3)
+        sino
+          si(id=2)
+            EnviarMensaje (listo,R1)
+            EnviarMensaje (listo,R3)
+          sino
+            EnviarMensaje (listo,R1)
+            EnviarMensaje (listo,R2)
+        repetir 2
+          RecibirMensaje (listo,*)
+        papeles:=0
+        Random(total,1,5)
+      sino
+        mover
+    Random(total,1,5)
+    papeles:=0
+    mientras (HayPapelEnLaEsquina)&(papeles < total)
+      tomarPapel
+      total:=total + 1
+    si (id=1)
+      EnviarMensaje (listo,R2)
+      EnviarMensaje (listo,R3)
+    sino
+      si(id=2)
+        EnviarMensaje (listo,R1)
+        EnviarMensaje (listo,R3)
+      sino
+        EnviarMensaje (listo,R1)
+        EnviarMensaje (listo,R2)
+    repetir 2
+      RecibirMensaje (listo,*)
+  fin
+  
+  robot cordinador
+  comenzar
+    EnviarMensaje (1,R1)
+    EnviarMensaje (2,R2)
+    EnviarMensaje (3,R3)
+  fin
+  
+variables
+  RC: cordinador
+  R1,R2,R3:papeleros
+comenzar
+  AsignarArea(RC, CORDI)
+  AsignarArea(R1, UNO)
+  AsignarArea(R2, DOS)  
+  AsignarArea(R3, TRES)
+  Iniciar(RC, 100,100)
+  Iniciar(R1,1,90)
+  Iniciar(R2,2,90)
+  Iniciar(R3,3,90)
+fin

@@ -1,0 +1,109 @@
+programa ejemplo
+procesos
+  proceso juntarFlores (ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores + 1
+  fin
+  
+  proceso juntarPapeles (ES papeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles + 1
+  fin
+  
+  proceso equipoA (ES papeles:numero)
+  comenzar
+    repetir 9
+      juntarPapeles(papeles)
+      mover
+    juntarPapeles(papeles)
+  fin
+  
+  proceso equipoB (ES flores:numero)
+  comenzar
+    repetir 9
+      juntarFlores(flores)
+      mover
+    juntarFlores(flores)
+  fin
+
+areas
+  ciudadA: AreaPC (1,1,40,1)
+  ciudadB: AreaPC (1,5,40,5)
+robots
+  robot robotA1
+  variables
+    papeles,av:numero
+  comenzar
+    derecha
+    av:=PosAv + 20
+    papeles:=0
+    equipoA(papeles)
+    EnviarMensaje(papeles, A2)
+    Pos(av, PosCa)
+    RecibirMensaje(papeles, A2)
+    equipoA(papeles)
+    EnviarMensaje(papeles, A2)
+  fin
+  robot robotA2
+  variables
+    papeles,av:numero
+  comenzar
+    derecha
+    av:=PosAv + 20
+    RecibirMensaje(papeles, A1)
+    equipoA(papeles)
+    EnviarMensaje(papeles, A1)
+    Pos(av,PosCa)
+    RecibirMensaje(papeles, A1)
+    equipoA(papeles)
+    Informar ('La cantidad de papeles que juntaron los dos ROBOTS es ', papeles)
+  fin
+  
+  robot robotB1
+  variables
+    flores,av:numero
+  comenzar
+    derecha
+    av:=PosAv + 20
+    flores:=0
+    equipoB(flores)
+    EnviarMensaje(flores, B2)
+    Pos(av,PosCa)
+    RecibirMensaje(flores, B2)
+    equipoB(flores)
+    EnviarMensaje(flores, B2)
+  fin
+  robot robotB2
+  variables
+    flores,av:numero
+  comenzar
+    derecha
+    av:=PosAv + 20
+    RecibirMensaje (flores,B1)
+    equipoB (flores)
+    Pos(av,PosCa)
+    EnviarMensaje (flores,B1)
+    RecibirMensaje(flores, B1)
+    equipoB (flores)
+    Informar ('La cantidad de flores que juntaron los dos ROBOTS es ', flores)
+  fin
+  
+variables
+  A1: robotA1
+  A2: robotA2
+  B1: robotB1
+  B2: robotB2
+comenzar
+  AsignarArea(A1, ciudadA)
+  AsignarArea(A2, ciudadA)  
+  AsignarArea(B1, ciudadB)
+  AsignarArea(B2, ciudadB)
+  Iniciar(A1, 1,1)
+  Iniciar(A2, 11,1)
+  Iniciar(B1, 1,5)
+  Iniciar(B2, 11,5)
+fin

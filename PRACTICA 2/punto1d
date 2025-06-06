@@ -1,0 +1,94 @@
+programa ejemplo
+procesos
+  proceso juntarF (ES flores:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:= flores + 1
+  fin
+  proceso recorrerAvenida(ES flores: numero)
+  comenzar
+    repetir 9
+      juntarF(flores)
+      mover
+    juntarF(flores)
+  fin
+areas
+  a1: AreaP (1,1,1,10)
+  a2: AreaP (2,11,2,20)
+  a3: AreaP (3,21,3,30)
+  a4: AreaP (4,31,4,40)
+  a5: AreaP (5,41,5,50)
+  a6: AreaP (6,51,6,60)
+  af: AreaP (2,1,2,1)
+robots
+  robot Robot
+  variables
+    flores,id:numero
+  comenzar
+    RecibirMensaje (id, rf)
+    flores:=0
+    recorrerAvenida(flores)
+    EnviarMensaje(id,rf)
+    EnviarMensaje(flores, rf)
+  fin
+  robot Rfisca
+  variables
+    flores, max,idmax, id:numero
+  comenzar
+    max:=-1
+    EnviarMensaje(1,R1)
+    EnviarMensaje(2,R2)
+    EnviarMensaje(3,R3)
+    EnviarMensaje(4,R4)
+    EnviarMensaje(5,R5)
+    EnviarMensaje(6,R6)
+    repetir 6
+      RecibirMensaje(id, *)
+      si (id = 1)
+        RecibirMensaje (flores, R1)
+      sino
+        si (id = 2)
+          RecibirMensaje (flores, R2)
+        sino
+          si (id = 3)
+            RecibirMensaje (flores, R3)
+          sino
+            si (id = 4)
+              RecibirMensaje (flores, R4)
+            sino
+              si (id = 5)
+                RecibirMensaje (flores, R5)
+              sino
+                RecibirMensaje (flores, R6)
+      si (flores > max)
+        max:=flores
+        idmax:=id
+    Informar ("Gano el chad ", idmax)
+    Informar ("Con la cantidad ", max)
+  fin
+  
+variables
+  R1: Robot
+  R2: Robot
+  R3: Robot
+  R4: Robot
+  R5: Robot
+  R6: Robot
+  rf: Rfisca
+comenzar
+  AsignarArea(R1, a1)
+  AsignarArea(R2, a2)
+  AsignarArea(R3, a3)
+  AsignarArea(R4, a4)
+  AsignarArea(R5, a5)
+  AsignarArea(R6, a6)
+  AsignarArea(rf, af)
+  Iniciar(R1, 1,1)
+  Iniciar(R2, 2,11)
+  Iniciar(R3, 3,21)
+  Iniciar(R4, 4,31)
+  Iniciar(R5, 5,41)
+  Iniciar(R6, 6,51)
+  Iniciar(rf, 2,1)
+fin

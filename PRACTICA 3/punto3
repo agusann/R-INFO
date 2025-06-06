@@ -1,0 +1,117 @@
+programa ejemplo
+procesos
+  proceso recorrerAvenida(E numAv: numero)
+  comenzar
+    Pos(numAv, 1)
+    repetir 99
+      mover
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot florero
+  variables
+    ok,termino:boolean
+    ca,av,OriAv,OriCa,id,flores:numero
+  comenzar
+    flores:=0
+    OriAv:= PosAv
+    OriCa:= PosCa
+    RecibirMensaje (id,RF)
+    RecibirMensaje (ca,RF)
+    RecibirMensaje (av,RF)
+    
+    RecibirMensaje (ok,RF)
+    mientras (ok=V)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      si (HayFlorEnLaEsquina)  
+        tomarFlor
+        flores:=flores + 1
+        termino:=V
+      sino
+        termino:=F
+      Pos(OriAv,OriCa)
+      LiberarEsquina(av,ca)
+      EnviarMensaje (termino,RF)
+      RecibirMensaje(ok,RF)
+    EnviarMensaje(id,RF)
+    EnviarMensaje(flores,RF)
+    
+    
+
+      
+  fin
+  robot robotJefe
+  variables
+    ok,termino:boolean
+    id,idmax,max,ca,av,flores:numero
+  comenzar
+    max:=0
+    Random(ca,2,10)
+    Random(av,2,10)
+    EnviarMensaje (1,R1)
+    EnviarMensaje(ca,R1)
+    EnviarMensaje(av,R1)
+    
+    EnviarMensaje (2,R2)
+    EnviarMensaje(ca,R2)
+    EnviarMensaje(av,R2)
+    
+    EnviarMensaje (3,R3)
+    EnviarMensaje(ca,R3)
+    EnviarMensaje(av,R3)
+    
+    EnviarMensaje (4,R4)
+    EnviarMensaje(ca,R4)
+    EnviarMensaje(av,R4)
+    ok:=V
+    mientras (ok= V)
+      EnviarMensaje(ok,R1)
+      EnviarMensaje(ok,R2)
+      EnviarMensaje(ok,R3)
+      EnviarMensaje(ok,R4)
+      repetir 4
+        RecibirMensaje (termino,*)
+        si (termino = F)
+          ok:=F
+    EnviarMensaje (F,R1)
+    EnviarMensaje (F,R2)
+    EnviarMensaje (F,R3)
+    EnviarMensaje (F,R4)
+    repetir 4
+      RecibirMensaje (id,*)
+      si (id=1)
+        RecibirMensaje(flores,R1)
+      sino
+        si (id=2)
+          RecibirMensaje(flores,R2)
+        sino
+          si (id=3)
+            RecibirMensaje(flores,R3)
+          sino
+            RecibirMensaje(flores,R4)
+      si (flores > max)
+        max:=flores
+        idmax:=id
+    Informar ('El ROBOT ganador es el ', idmax)
+
+  fin
+variables
+  RF: robotJefe
+  R1: florero
+  R2: florero
+  R3: florero
+  R4: florero
+comenzar
+  AsignarArea(RF, ciudad)
+  AsignarArea(R1, ciudad)
+  AsignarArea(R2, ciudad)
+  AsignarArea(R3, ciudad)
+  AsignarArea(R4, ciudad)
+  Iniciar(RF, 1,1)
+  Iniciar(R1, 2,1)
+  Iniciar(R2, 3,1)
+  Iniciar(R3, 4,1)
+  Iniciar(R4, 5,1)  
+fin

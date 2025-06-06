@@ -1,0 +1,93 @@
+programa ejemplo
+procesos
+  proceso juntarflor (ES flores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores + 1
+  fin 
+  proceso juntarpapel (ES papeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles + 1
+  fin
+  
+areas
+  AreaFloreros: AreaPC (1,1,5,10)
+  AreaPapeleros: AreaPC (6,1,10,9)
+  IniFloreros: AreaPC (6,10,7,10)
+  IniPapeleros: AreaPC (8,10,9,10)
+  Deposito: AreaC (10,10,10,10)
+robots
+  robot robotFlorero
+  variables
+    av,ca,OriAv,OriCa,flores:numero
+  comenzar
+    flores:=0
+    OriAv:= PosAv
+    OriCa:= PosCa
+    repetir 5
+      Random(av,1,5)
+      Random(ca,1,10)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      juntarflor(flores)
+      Pos(OriAv,OriCa)
+      LiberarEsquina(av,ca)
+    Informar  ('flores ', flores)
+    repetir flores
+      BloquearEsquina (10,10)
+      Pos(10,10)
+      depositarFlor
+      Pos(OriAv,OriCa)
+      LiberarEsquina (10,10)    
+  fin
+  
+  robot robotPapelero
+  variables
+    av,ca,OriAv,OriCa,papeles:numero
+  comenzar
+    papeles:=0
+    OriAv:=PosAv
+    OriCa:=PosCa
+    repetir 3
+      Random(av,6,10)
+      Random (ca,1,9)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      juntarpapel(papeles)
+      Pos(OriAv,OriCa)
+      LiberarEsquina (av,ca)
+    Informar  ('Papeles ', papeles)
+    repetir papeles
+      BloquearEsquina(10,10)
+      Pos(10,10)
+      depositarPapel
+      Pos(OriAv,OriCa)
+      LiberarEsquina(10,10)
+  fin
+variables
+  RF1: robotFlorero
+  RF2: robotFlorero
+  RP1: robotPapelero
+  RP2: robotPapelero
+comenzar
+  AsignarArea(RF1, AreaFloreros)
+  AsignarArea(RF1, IniFloreros)  
+  AsignarArea(RF1, Deposito)
+  AsignarArea(RF2, AreaFloreros)
+  AsignarArea(RF2, IniFloreros)  
+  AsignarArea(RF2, Deposito)
+  
+  AsignarArea(RP1, AreaPapeleros)
+  AsignarArea(RP1, IniPapeleros)  
+  AsignarArea(RP1, Deposito)
+  AsignarArea(RP2, AreaPapeleros)
+  AsignarArea(RP2, IniPapeleros)  
+  AsignarArea(RP2, Deposito)
+  Iniciar(RF1, 6,10)
+  Iniciar(RF2, 7,10)
+  Iniciar(RP1, 8,10)
+  Iniciar(RP2, 9,10)
+fin
