@@ -30,25 +30,28 @@ areas
 robots
   robot trabajador
   variables
-    av,ca,tarea:numero
+    OriAv,av,ca,tarea:numero
     termine:boolean
   comenzar
+    OriAv:=PosAv
     termine:=F
     mientras (termine = F)
       RecibirMensaje (tarea,RJ)
-      si (tarea <> 4)
+      si (tarea = 4)
+        termine:=V
+      sino
         RecibirMensaje (av,RJ)
         RecibirMensaje (ca,RJ)
-      si (tarea = 1)
-        tarea1(av,ca)
-      sino
-        si (tarea = 2)
-          tarea2(av,ca)
+        BloquearEsquina (av,ca)
+        si (tarea = 1)
+          tarea1(av,ca)
         sino
-          si (tarea = 3)
-            tarea3(av,ca)
+          si (tarea = 2)
+            tarea2(av,ca)
           sino
-            termine:=V
+            tarea3(av,ca)
+        LiberarEsquina(av,ca)
+        Pos(OriAv,1)
       EnviarMensaje (termine,RJ)
   fin
   robot jefe
