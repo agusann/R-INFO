@@ -1,0 +1,93 @@
+programa punto1
+procesos
+  proceso juntarFlor(ES flores: numero)
+  comenzar 
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flores:=flores + 1
+  fin
+  proceso juntarPapel(ES papeles:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      papeles:=papeles + 1
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot rojo
+  variables
+    id,flores:numero
+  comenzar
+    flores:=0
+    RecibirMensaje (id,RF)
+    repetir 99
+      juntarFlor(flores)
+      mover
+    juntarFlor(flores)
+    EnviarMensaje (id,RF)
+    EnviarMensaje (flores,RF)
+  fin
+  
+  robot azul
+  variables
+    id,papeles:numero
+  comenzar
+    papeles:=0
+    RecibirMensaje (id,RF)
+    repetir 99
+      juntarPapel(papeles)
+      mover
+    juntarPapel(papeles)
+    EnviarMensaje (id,RF)
+    EnviarMensaje (papeles,RF)
+  fin
+  
+  robot fisca
+  variables
+    id,totalF,totalP,papeles,flores:numero
+  comenzar
+    totalF:=0
+    totalP:=0
+    EnviarMensaje (1,R1)
+    EnviarMensaje (2,R2)
+    EnviarMensaje (3,A1)
+    EnviarMensaje (4,A2)
+    repetir 4
+      RecibirMensaje (id, *)
+      si (id = 1)
+        RecibirMensaje (flores,R1)
+        totalF:=totalF + flores
+      sino
+        si (id = 2)
+          RecibirMensaje (flores,R2)
+          totalF:=totalF + flores
+        sino
+          si (id = 3)
+            RecibirMensaje (papeles,A1)
+            totalP:=totalP + papeles
+          sino
+            RecibirMensaje (papeles,A2)
+            totalP:=totalP + papeles
+    si (totalF > totalP)
+      Informar ('EL GANADOR Es EL EQUIPO ROJO ', totalF)
+    sino
+      Informar ('EL GANADOR Es EL EQUIPO AZUL ', totalP)
+  fin
+variables
+  RF: fisca
+  R1,R2: rojo
+  A1,A2: azul
+comenzar
+  AsignarArea(RF, ciudad)
+  AsignarArea(R1, ciudad)
+  AsignarArea(R2, ciudad)
+  AsignarArea(A1, ciudad)
+  AsignarArea(A2, ciudad)
+  Iniciar(RF, 1,1)
+  Iniciar(R1, 2,1) 
+  Iniciar(R2, 3,1)
+  Iniciar(A1, 98,1)
+  Iniciar(A2, 99,1)
+  
+fin
